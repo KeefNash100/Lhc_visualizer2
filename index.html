@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LHC Visualizer 2 // Unified Matrix</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #020202;
+            color: #ff3333;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        #hud-container {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 100;
+            background: rgba(4, 1, 1, 0.9);
+            border: 1px solid #ff3333;
+            padding: 15px;
+            width: 310px;
+            pointer-events: none;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+        }
+        .metric { margin-bottom: 8px; font-size: 0.9em; }
+        .value { color: #ffffff; font-weight: bold; float: right; }
+        canvas#webgl-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+        #controls {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            background: #150000;
+            color: #ff3333;
+            border: 1px solid #ff3333;
+            padding: 10px 15px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background: #ff3333; color: #000; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+<div id="hud-container">
+    <div style="border-bottom: 1px dashed #ff3333; padding-bottom:5px; margin-bottom:10px; font-weight:bold; text-align:center;">
+        === HAMMERLOOM UNIFIED HUD ===
+    </div>
+    <div class="metric">Track Sector: <span id="hud-sector" class="value">-</span></div>
+    <div class="metric">Matrix Velocity: <span id="hud-speed" class="value">0</span> MPH</div>
+    <div class="metric">Lenz Induced Flux: <span id="hud-force" class="value">0.00</span> T</div>
+    <div class="metric">System Entropy State: <span id="hud-entropy" class="value">0.00000</span></div>
+    <div class="metric">Global Coherence: <span id="hud-coherence" class="value">98.5%</span></div>
+</div>
+
+<div id="controls">
+    <button onclick="setSector('compression')">KARUSSELL COMPRESSION</button>
+    <button onclick="setSector('funnel')">FUCHSROHRE FUNNEL</button>
+    <button onclick="setSector('straight')">340+ MPH STRAIGHTAWAY</button>
+</div>
+
+<canvas id="webgl-canvas"></canvas>
+
+<script type="module">
+    import { PhysicsEngine } from './src/core/physics-engine.js';
+
+    const engine = new PhysicsEngine();
+    let currentSector = 'compression';
+
+    window.setSector = function(sectorZone) {
+        currentSector = sectorZone;
+    };
+
+    // --- THREE.JS FIELD INITIALIZATION ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Create an orbital mesh cloud representing the fluctuating magnetic fields
+    const geometry = new THREE.TorusKnotGeometry(9, 2.5, 120, 16);
+    const material = new THREE.PointsMaterial({ color: 0xff3333, size: 0.07 });
+    const fieldParticles = new THREE.Points(geometry, material);
+    scene.add(fieldParticles);
+
+    camera.position.z = 25;
+
+    // --- RECURSIVE MATRIX TICKER ---
+    function renderFrame() {
+        requestAnimationFrame(renderFrame);
+
+        // Extract active physical parameters from backend engine
+        const telemetry = engine.calculateNextFrame(currentSector);
+
+        // Feed metrics instantly to HUD elements
+        document.getElementById('hud-sector').innerText = currentSector.toUpperCase();
+        document.getElementById('hud-speed').innerText = telemetry.velocity;
+        document.getElementById('hud-force').innerText = telemetry.lorentzForce + " T";
+        document.getElementById('hud-entropy').innerText = telemetry.entropy;
+        document.getElementById('hud-coherence').innerText = telemetry.coherence + "%";
+
+        // Dynamic 3D mesh behavior linked directly to current tracking speeds
+        fieldParticles.rotation.x += 0.004;
+        fieldParticles.rotation.y += parseFloat(telemetry.lorentzForce) * 0.002;
+
+        // Visual color translation mapping based on current performance load
+        if (currentSector === 'straight') {
+            material.color.setHex(0x00ff66); // Frictionless emerald glide line
+        } else if (currentSector === 'funnel') {
+            material.color.setHex(0xffaa00); // Amber warning compression threshold
+        } else {
+            material.color.setHex(0xff3333); // High flux crimson tracking field
+        }
+
+        renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    renderFrame();
+</script>
+</body>
+</html>
