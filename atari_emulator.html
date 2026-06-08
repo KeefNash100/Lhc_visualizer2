@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HammerLoom // Retro 6502 Matrix Emulator</title>
+    <style>
+        body { background: #000; color: #00ff66; font-family: monospace; padding: 20px; text-align: center; }
+        iframe { border: 2px solid #00ff66; width: 100%; max-width: 640px; height: 400px; background: #000; }
+        .instructions { max-width: 600px; margin: 15px auto; text-align: left; font-size: 0.9em; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+    <h2>=== ATARI 800XL RELEAUX SUB-ROUTINE INSTANCE ===</h2>
+    
+    <iframe src="https://javatari.org/javatari.html" scrolling="no"></iframe>
+
+    <div class="instructions">
+        <strong>⚡ 64KB MATRIX BOOTSTRAP INSTRUCTIONS:</strong><br>
+        1. Wait for the emulator interface to settle at the classic blue screen.<br>
+        2. Press your mobile keyboard overlay and enter the following baseline strings:<br><br>
+        <code>10 GRAPHICS 7 : COLOR 1</code><br>
+        <code>20 PRINT "COHERENCE LOCK: 98.5%"</code><br>
+        <code>30 FOR T = 0 TO 314 STEP 0.1 : Y = 40 + INT(ABS(COS(T))*8)</code><br>
+        <code>40 PLOT T*25, Y : SOUND 0, 100+Y, 10, 4 : NEXT T : GOTO 30</code><br><br>
+        3. Type <code>RUN</code> and push Enter to see the 1983 hardware oscillate!
+    </div>
+
+</body>
+</html>
