@@ -3,28 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HammerLoom // Retro 6502 Matrix Emulator</title>
+    <title>HammerLoom // Retro 8-Bit Atari 800XL Matrix Emulator</title>
     <style>
         body { background: #000; color: #00ff66; font-family: monospace; padding: 20px; text-align: center; }
-        iframe { border: 2px solid #00ff66; width: 100%; max-width: 640px; height: 400px; background: #000; }
-        .instructions { max-width: 600px; margin: 15px auto; text-align: left; font-size: 0.9em; line-height: 1.4; }
+        iframe { border: 2px solid #00ff66; width: 100%; max-width: 640px; height: 450px; background: #000; }
+        .instructions { max-width: 600px; margin: 15px auto; text-align: left; font-size: 0.9em; line-height: 1.6; }
+        code { background: #001a00; padding: 2px 6px; border-left: 2px solid #00ff66; display: block; margin: 5px 0; }
     </style>
 </head>
 <body>
 
-    <h2>=== ATARI 800XL RELEAUX SUB-ROUTINE INSTANCE ===</h2>
+    <h2>=== ATARI 800XL 64KB HAMMERLOOM MATRIX INSTANCE ===</h2>
+    <p style="color: #00ff66; font-size: 0.85em;">Full 8-bit Computer with Keyboard + Native BASIC Execution</p>
     
-    <iframe src="https://javatari.org/javatari.html" scrolling="no"></iframe>
+    <iframe src="https://www.wscato.com.br/atari800html5/" scrolling="no"></iframe>
 
     <div class="instructions">
-        <strong>⚡ 64KB MATRIX BOOTSTRAP INSTRUCTIONS:</strong><br>
-        1. Wait for the emulator interface to settle at the classic blue screen.<br>
-        2. Press your mobile keyboard overlay and enter the following baseline strings:<br><br>
+        <strong>⚡ BOOTSTRAP SEQUENCE (TYPE INTO READY PROMPT):</strong><br><br>
+        
+        <strong>Step 1: Setup Graphics Mode & Colors</strong><br>
         <code>10 GRAPHICS 7 : COLOR 1</code><br>
-        <code>20 PRINT "COHERENCE LOCK: 98.5%"</code><br>
-        <code>30 FOR T = 0 TO 314 STEP 0.1 : Y = 40 + INT(ABS(COS(T))*8)</code><br>
-        <code>40 PLOT T*25, Y : SOUND 0, 100+Y, 10, 4 : NEXT T : GOTO 30</code><br><br>
-        3. Type <code>RUN</code> and push Enter to see the 1983 hardware oscillate!
+        <code>20 PRINT "   == HAMMERLOOM V1.1 MATRIX =="</code><br><br>
+        
+        <strong>Step 2: Initialize the Coherence Oscillation Loop</strong><br>
+        <code>30 FOR T = 0 TO 314 STEP 0.1</code><br>
+        <code>40 Y = 40 + INT(ABS(COS(T)) * 8)</code><br>
+        <code>50 PLOT T * 0.5, Y : REM PLOTS THE INDUCED FIELD</code><br>
+        <code>60 SOUND 0, 150 + Y, 10, 6 : NEXT T</code><br>
+        <code>70 GOTO 30</code><br><br>
+        
+        <strong>Step 3: Execute the Matrix</strong><br>
+        Type: <code>RUN</code> and press Enter<br><br>
+        
+        <strong>Result:</strong> The 1983 Atari 800XL hardware will render a live oscillating waveform synchronized to acoustic feedback—the pure essence of the HammerLoom optimization matrix running on 64KB of silicon! 🧲📡
     </div>
 
 </body>
