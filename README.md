@@ -1,4 +1,4 @@
-# LHC Visualizer2
+# Lhc Visualizer2
 
 Interactive 3D visualization of the Large Hadron Collider with real physics constraints. Built as an optimization framework that improves itself through gauntlet testing.
 
